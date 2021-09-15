@@ -453,19 +453,21 @@ static inline void mat4x4_look_at(mat4x4 M, const vec3 eye, const vec3 center, c
     vec3_cross(right, forward, up);
     vec3_normalize(right, right);
 
+    vec3 t;
+    vec3_cross(t, right, forward);
+
     mat4x4_identity(M);
     M[0][0] = right[0];
     M[1][0] = right[1];
     M[2][0] = right[2];
-    M[0][1] = up[0];
-    M[1][1] = up[1];
-    M[2][1] = up[2];
+    M[0][1] = t[0];
+    M[1][1] = t[1];
+    M[2][1] = t[2];
     M[0][2] = -forward[0];
     M[1][2] = -forward[1];
     M[2][2] = -forward[2];
-    M[3][0] = -eye[0];
-    M[3][1] = -eye[1];
-    M[3][2] = -eye[2];
+
+    mat4x4_translate(M, M, -eye[0], -eye[1], -eye[2]);
 }
 
 #endif  // LINMATH_H
